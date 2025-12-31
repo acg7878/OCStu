@@ -74,6 +74,12 @@
         make.left.right.equalTo(self.contentView);
         make.height.mas_equalTo(80);
     }];
+    UILabel* titleLabel = [[UILabel alloc] init];
+    [topTitle addSubview:titleLabel];
+    titleLabel.text = @"顶部标题栏";
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(topTitle);
+    }];
     
     // 练习 1.2：创建一个居中的正方形
     // TODO: 创建一个 UIView，设置蓝色背景，圆角 10
@@ -102,6 +108,11 @@
     // TODO: 左右各留 20 边距，距底部 20，高度 50
     // TODO: 设置标题 "底部按钮（距底部20）"
     // TODO: 最后更新 contentView 的 bottom 约束，确保可滚动
+    UIButton *button = [[UIButton alloc] init];
+    button.backgroundColor = [UIColor systemGreenColor];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+    }];
 }
 
 #pragma mark - Level 2: 相对布局
