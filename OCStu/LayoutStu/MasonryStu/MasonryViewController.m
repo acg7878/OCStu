@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) NSArray<NSString *> *levelTitles;
+@property (nonatomic, strong) MASConstraint *contentBottomConstraint;
 
 @end
 
@@ -25,12 +27,19 @@
     
     // 创建滚动视图
     [self setupScrollView];
-    
-    // 开始练习！根据需要切换不同的练习方法
-    [self level1_BasicPositioning];
-//    [self level2_RelativeLayout];
-//    [self level3_PracticalComponents];
-//    [self level4_ComplexLayout];
+
+    self.levelTitles = @[ @"关卡 1：基础定位",
+                          @"关卡 2：相对布局",
+                          @"关卡 3：实用组件",
+                          @"关卡 4：复杂布局" ];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"选择关卡"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(showLevelList)];
+
+    // 默认展示第一关
+    [self loadLevelAtIndex:0];
 }
 
 #pragma mark - ScrollView Setup
@@ -54,6 +63,72 @@
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.scrollView);
         make.width.equalTo(self.scrollView);
+    }];
+}
+
+#pragma mark - Level Picker
+
+- (void)showLevelList {
+    // 使用 Alert 样式让列表居中，不会“飞出屏幕”
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"选择关卡"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    for (NSUInteger idx = 0; idx < self.levelTitles.count; idx++) {
+        NSString *title = self.levelTitles[idx];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:title
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull __unused alertAction) {
+            [self loadLevelAtIndex:(NSInteger)idx];
+        }];
+        [alert addAction:action];
+    }
+
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)loadLevelAtIndex:(NSInteger)index {
+    if (index < 0 || index >= (NSInteger)self.levelTitles.count) {
+        return;
+    }
+
+    self.title = self.levelTitles[(NSUInteger)index];
+    [self resetContentView];
+
+    switch (index) {
+        case 0:
+            [self level1_BasicPositioning];
+            break;
+        case 1:
+            [self level2_RelativeLayout];
+            break;
+        case 2:
+            [self level3_PracticalComponents];
+            break;
+        case 3:
+            [self level4_ComplexLayout];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)resetContentView {
+    [self.contentBottomConstraint uninstall];
+    self.contentBottomConstraint = nil;
+
+    for (UIView *subview in self.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+}
+
+- (void)pinContentBottomToView:(UIView *)view offset:(CGFloat)offset {
+    [self.contentBottomConstraint uninstall];
+    __weak typeof(self) weakSelf = self;
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        weakSelf.contentBottomConstraint = make.bottom.equalTo(view.mas_bottom).offset(offset);
     }];
 }
 
@@ -120,9 +195,7 @@
     }];
 
     // 更新 contentView 高度以确保滚动范围包含按钮
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(button.mas_bottom).offset(20);
-    }];
+    [self pinContentBottomToView:button offset:20];
 }
 
 #pragma mark - Level 2: 相对布局
@@ -132,15 +205,39 @@
     // TODO: 创建 topBox，橙色背景，距顶部 20，左右各 20 边距，高度 100
     // TODO: 创建 bottomBox，青色背景，相对 topBox 底部向下 20，其他同上
     // 关键：使用 make.top.equalTo(topBox.mas_bottom).offset(20)
-    
-    
-    // 练习 2.2：左右两栏等宽布局
-    // TODO: 创建 leftColumn 和 rightColumn
-    // TODO: 顶部对齐上一个视图底部，左右等宽，中间间距 20
-    // 关键：make.width.equalTo(rightColumn)
-    
-    
-    // TODO: 更新 contentView 高度
+
+    UIView *topBox = [[UIView alloc] init];
+    topBox.backgroundColor = [UIColor systemOrangeColor];
+    [self.contentView addSubview:topBox];
+    [topBox mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).offset(20);
+        make.left.equalTo(self.contentView).offset(20);
+        make.right.equalTo(self.contentView).offset(-20);
+        make.height.mas_equalTo(100);
+    }];
+
+    UIView *bottomBox = [[UIView alloc] init];
+    bottomBox.backgroundColor = [UIColor systemTealColor];
+    [self.contentView addSubview:bottomBox];
+    [bottomBox mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(topBox.mas_bottom).offset(20);
+        make.left.right.equalTo(topBox);
+        make.height.equalTo(topBox);
+    }];
+
+    UILabel *topLabel = [self createLabel:@"topBox (高度100)" ];
+    [topBox addSubview:topLabel];
+    [topLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(topBox);
+    }];
+
+    UILabel *bottomLabel = [self createLabel:@"bottomBox (高度100)" ];
+    [bottomBox addSubview:bottomLabel];
+    [bottomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(bottomBox);
+    }];
+
+    [self pinContentBottomToView:bottomBox offset:20];
 }
 
 #pragma mark - Level 3: 实用组件
