@@ -1,0 +1,80 @@
+//
+//  HomeViewController.m
+//  OCStu
+//
+//  Created by Derek on 2025/12/30.
+//
+
+#import "HomeViewController.h"
+#import "MasonryViewController.h"
+
+// 匿名拓展
+@interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSArray<NSDictionary *> *menuItems;
+
+@end
+
+@implementation HomeViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"首页";
+    
+    // 菜单数据
+    self.menuItems = @[
+        @{@"title": @"Masonry 布局练习", @"subtitle": @"学习手写 UI 布局", @"controller": @"MaysonryViewController"}
+    ];
+    
+    [self setupTableView];
+}
+
+- (void)setupTableView {
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleInsetGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.backgroundColor = [UIColor systemGroupedBackgroundColor];
+    [self.view addSubview:self.tableView];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.menuItems.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellID = @"MenuCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    NSDictionary *item = self.menuItems[indexPath.row];
+    cell.textLabel.text = item[@"title"];
+    cell.textLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    cell.detailTextLabel.text = item[@"subtitle"];
+    cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSDictionary *item = self.menuItems[indexPath.row];
+    NSString *controllerName = item[@"controller"];
+    
+    if ([controllerName isEqualToString:@"MaysonryViewController"]) {
+        MasonryViewController *vc = [[MasonryViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+@end
