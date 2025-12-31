@@ -110,8 +110,18 @@
     // TODO: 最后更新 contentView 的 bottom 约束，确保可滚动
     UIButton *button = [[UIButton alloc] init];
     button.backgroundColor = [UIColor systemGreenColor];
+    [button setTitle:@"底部按钮（距底部20）" forState:UIControlStateNormal];
+    [self.contentView addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
-        
+        make.left.equalTo(self.contentView).offset(20);
+        make.right.equalTo(self.contentView).offset(-20);
+        make.height.mas_equalTo(50);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
+    }];
+
+    // 更新 contentView 高度以确保滚动范围包含按钮
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(button.mas_bottom).offset(20);
     }];
 }
 
