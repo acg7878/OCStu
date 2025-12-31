@@ -206,38 +206,25 @@
     // TODO: 创建 bottomBox，青色背景，相对 topBox 底部向下 20，其他同上
     // 关键：使用 make.top.equalTo(topBox.mas_bottom).offset(20)
 
-    UIView *topBox = [[UIView alloc] init];
+    UIView* topBox = [[UIView alloc] init];
     topBox.backgroundColor = [UIColor systemOrangeColor];
     [self.contentView addSubview:topBox];
     [topBox mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(20);
-        make.left.equalTo(self.contentView).offset(20);
-        make.right.equalTo(self.contentView).offset(-20);
         make.height.mas_equalTo(100);
+        make.top.equalTo(self.contentView).offset(20);
+        make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 20, 0, 20));
     }];
-
-    UIView *bottomBox = [[UIView alloc] init];
-    bottomBox.backgroundColor = [UIColor systemTealColor];
+    
+    
+    UIView* bottomBox = [[UIView alloc] init];
+    bottomBox.backgroundColor = [UIColor systemBlueColor];
     [self.contentView addSubview:bottomBox];
     [bottomBox mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(100);
         make.top.equalTo(topBox.mas_bottom).offset(20);
-        make.left.right.equalTo(topBox);
-        make.height.equalTo(topBox);
+        make.left.right.equalTo(self.contentView).insets(UIEdgeInsetsMake(0, 20, 0, 20));
     }];
-
-    UILabel *topLabel = [self createLabel:@"topBox (高度100)" ];
-    [topBox addSubview:topLabel];
-    [topLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(topBox);
-    }];
-
-    UILabel *bottomLabel = [self createLabel:@"bottomBox (高度100)" ];
-    [bottomBox addSubview:bottomLabel];
-    [bottomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(bottomBox);
-    }];
-
-    [self pinContentBottomToView:bottomBox offset:20];
+    
 }
 
 #pragma mark - Level 3: 实用组件
