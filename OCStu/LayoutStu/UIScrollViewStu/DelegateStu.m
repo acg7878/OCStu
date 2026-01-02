@@ -1,5 +1,5 @@
 #import "DelegateStu.h"
-
+#import <Masonry/Masonry.h>
 
 @interface UIScrollViewController () <UIScrollViewDelegate>
 
@@ -28,12 +28,19 @@
 	self.scrollView.delegate = self;
 	[self.view addSubview:self.scrollView];
 
-	[NSLayoutConstraint activateConstraints:@[
-		[self.scrollView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-		[self.scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-		[self.scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-		[self.scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-	]];
+//	[NSLayoutConstraint activateConstraints:@[
+//		[self.scrollView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+//		[self.scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+//		[self.scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+//		[self.scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
+//	]];
+    // masonry 方法
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+        make.leading.equalTo(self.view.mas_leading);
+        make.trailing.equalTo(self.view.mas_trailing);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+    }];
 }
 
 - (void)setupOffsetLabel {
@@ -49,12 +56,19 @@
 	[self.view addSubview:self.offsetLabel];
 	[self.view bringSubviewToFront:self.offsetLabel];
 
-	[NSLayoutConstraint activateConstraints:@[
-		[self.offsetLabel.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:8],
-		[self.offsetLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16],
-		[self.offsetLabel.widthAnchor constraintGreaterThanOrEqualToConstant:140],
-		[self.offsetLabel.heightAnchor constraintEqualToConstant:28]
-	]];
+//	[NSLayoutConstraint activateConstraints:@[
+//		[self.offsetLabel.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:8],
+//		[self.offsetLabel.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:16],
+//		[self.offsetLabel.widthAnchor constraintGreaterThanOrEqualToConstant:140],
+//		[self.offsetLabel.heightAnchor constraintEqualToConstant:28]
+//	]];
+    
+    [self.offsetLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(8);
+        make.leading.equalTo(self.view.mas_leading).offset(16);
+        make.width.greaterThanOrEqualTo(@140);
+        make.height.equalTo(@28);
+    }];
 }
 
 - (void)buildSampleContent {
