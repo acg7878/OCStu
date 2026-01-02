@@ -8,6 +8,7 @@
 #import "HomeViewController.h"
 #import "MasonryViewController.h"
 #import "DelegateStu.h"
+#import "TableViewViewController.h"
 
 // 匿名拓展
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -27,7 +28,8 @@
     // 菜单数据
     self.menuItems = @[
         @{@"title": @"Masonry 布局练习", @"subtitle": @"学习手写 UI 布局", @"controller": @"MaysonryViewController"},
-        @{@"title": @"UIScrollView 代理练习", @"subtitle": @"滚动与代理回调", @"controller": @"UIScrollViewController"}
+        @{@"title": @"UIScrollView 代理练习", @"subtitle": @"滚动与代理回调", @"controller": @"UIScrollViewController"},
+        @{@"title": @"UITableView 练习", @"subtitle": @"列表视图系统学习", @"controller": @"TableViewViewController"}
     ];
     
     [self setupTableView];
@@ -78,6 +80,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([controllerName isEqualToString:@"UIScrollViewController"]) {
         UIScrollViewController *vc = [[UIScrollViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([controllerName isEqualToString:@"TableViewViewController"]) {
+        TableViewViewController *vc = [[TableViewViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
