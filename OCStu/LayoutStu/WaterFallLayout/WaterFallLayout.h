@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol WaterFallLayoutDelegate <NSObject>
 
-// 必须实现
+// @required：必须实现
 // @optional：可选实现
 @required
 - (CGFloat)waterfallLayout:(UICollectionViewLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath withItemWidth:(CGFloat)itemWidth;
@@ -22,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 代理对象（获取item高度）
 @property (nonatomic, copy) id<WaterFallLayoutDelegate> delegate;
-
 /// 列数
 @property (nonatomic, assign) NSInteger columnCount;
 
