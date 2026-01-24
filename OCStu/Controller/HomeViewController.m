@@ -9,6 +9,7 @@
 #import "MasonryViewController.h"
 #import "DelegateStu.h"
 #import "TableViewViewController.h"
+#import "WaterFallDemoViewController.h"
 
 // 匿名拓展
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -27,9 +28,10 @@
     
     // 菜单数据
     self.menuItems = @[
-        @{@"title": @"Masonry 布局练习", @"subtitle": @"学习手写 UI 布局", @"controller": @"MaysonryViewController"},
+        @{@"title": @"Masonry 布局练习", @"subtitle": @"学习手写 UI 布局", @"controller": @"MasonryViewController"},
         @{@"title": @"UIScrollView 代理练习", @"subtitle": @"滚动与代理回调", @"controller": @"UIScrollViewController"},
-        @{@"title": @"UITableView 练习", @"subtitle": @"列表视图系统学习", @"controller": @"TableViewViewController"}
+        @{@"title": @"UITableView 练习", @"subtitle": @"列表视图系统学习", @"controller": @"TableViewViewController"},
+        @{@"title": @"瀑布流布局练习", @"subtitle": @"自定义 CollectionView 布局", @"controller": @"WaterFallDemoViewController"}
     ];
     
     [self setupTableView];
@@ -75,7 +77,7 @@
     NSDictionary *item = self.menuItems[indexPath.row];
     NSString *controllerName = item[@"controller"];
     
-    if ([controllerName isEqualToString:@"MaysonryViewController"]) {
+    if ([controllerName isEqualToString:@"MasonryViewController"]) {
         MasonryViewController *vc = [[MasonryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([controllerName isEqualToString:@"UIScrollViewController"]) {
@@ -83,6 +85,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([controllerName isEqualToString:@"TableViewViewController"]) {
         TableViewViewController *vc = [[TableViewViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([controllerName isEqualToString:@"WaterFallDemoViewController"]) {
+        WaterFallDemoViewController *vc = [[WaterFallDemoViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
