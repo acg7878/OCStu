@@ -69,7 +69,7 @@
   CGFloat columnSpacing = 10;   // 列间距
   CGFloat spacingWidth = (self.columnCount - 1) * columnSpacing;
   CGFloat itemWidth =
-      (collectionViewWidth - leftRightMargin - spacingWidth) / self.columnCount;
+      (collectionViewWidth - leftRightMargin * 2 - spacingWidth) / self.columnCount;
 
   // 遍历item计算位置
   NSInteger sections = [self.collectionView numberOfSections];

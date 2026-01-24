@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WaterFallLayout : UICollectionViewLayout
 
 /// 代理对象（获取item高度）
-@property (nonatomic, copy) id<WaterFallLayoutDelegate> delegate;
+@property (nonatomic, weak) id<WaterFallLayoutDelegate> delegate;
 /// 列数
 @property (nonatomic, assign) NSInteger columnCount;
 
