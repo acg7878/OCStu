@@ -9,6 +9,7 @@
 #import "WaterFallLayout.h"
 #import "WaterFallItemCell.h"
 #import "WaterFallItemModel.h"
+#import <Masonry/Masonry.h>
 
 @interface WaterFallDemoViewController () <UICollectionViewDataSource, WaterFallLayoutDelegate>
 
@@ -77,14 +78,9 @@
     [self.collectionView registerClass:[WaterFallItemCell class] forCellWithReuseIdentifier:@"WaterFallItemCell"];
     [self.view addSubview:self.collectionView];
     
-    // 自动布局
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-        [self.collectionView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-        [self.collectionView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-        [self.collectionView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        [self.collectionView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor]
-    ]];
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
