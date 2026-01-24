@@ -6,6 +6,7 @@ target 'OCStu' do
   use_frameworks!
 
   pod 'Masonry'
+  pod 'SDWebImage'
   pod 'LookinServer', :configurations => ['Debug']
   # Pods for OCStu
 
